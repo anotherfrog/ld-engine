@@ -23,14 +23,14 @@ public class MiniLD extends Game {
 		
 		this.spritesheet = new Spritesheet(new Bitmap("/test.png"), 16, 16);
 		
-		this.level = new Level("/levels/test.json", new Spritesheet(new Bitmap("/sprites.png"), 16, 16));
+		this.level = new Level("/levels/test.json", new Spritesheet(new Bitmap("/sprites.png"), 16, 16), screen.getWidth(), screen.getHeight());
 		
 		Bitmap temp = new Bitmap(16, 16, 0xFF4242);
 		this.player = new Entity(32, 32, 16, 16, temp);
 		this.level.addEntity(this.player);
 		
 		this.level.addLight(new Light(new Vector2f(28, 28)));
-		this.level.generateShadowMap();
+		this.level.generateShadowMap(screen);
 	}
 
 	@Override
@@ -44,17 +44,19 @@ public class MiniLD extends Game {
 		if (KEYBOARD.isPressed(KeyEvent.VK_D)) player.move(speed, 0, level);
 		
 		this.level.getLights().get(0).setPosition(MOUSE.getX() / window.getScale(), MOUSE.getY() / window.getScale());
-		this.level.generateShadowMap();
+		this.level.generateShadowMap(screen);
 	}
 
+	
 	@Override
 	public void render() {
 		screen.clear();
 
 		level.render(screen);
-//		level.renderColl(screen, 0, 0);
-		screen.blendBlit(level.getShadowMap(), level.getXOffset(), level.getYOffset(), BlendMode.ADD);
-//		screen.blit(level.getShadowMap(), level.getXOffset(), level.getYOffset());
+		
+		screen.blendBlit(level.getShadowMap(), level.getXOffset(), level.getYOffset(), BlendMode.MUL);
+
+		level.renderEntities(screen);
 	}
 	
 	

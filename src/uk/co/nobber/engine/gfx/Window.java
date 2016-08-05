@@ -1,12 +1,9 @@
 package uk.co.nobber.engine.gfx;
 
 import java.awt.Canvas;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -58,6 +55,16 @@ public class Window {
 		graphics.dispose();
 
 		bufferStrat.show();
+	}
+	
+	public void update(BufferedImage image) {
+		bufferStrat = this.canvas.getBufferStrategy();
+
+		Graphics graphics = bufferStrat.getDrawGraphics();
+		graphics.drawImage(image, 0, 0, width * scale, height * scale, null);
+		graphics.dispose();
+
+		bufferStrat.show();		
 	}
 
 	public void setTitle(String title) {

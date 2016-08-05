@@ -1,5 +1,7 @@
 package uk.co.nobber.engine.gfx;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.File;
@@ -76,6 +78,27 @@ public class Bitmap {
 		return this.pixels[x + y * width];
 	}
 
+	public int getR(int x, int y) {
+		int rgb = getPixel(x, y);
+		int r = (rgb & 0xFF0000) >> 16;
+
+		return r;
+	}
+
+	public int getG(int x, int y) {
+		int rgb = getPixel(x, y);
+		int g = (rgb & 0xFF00) >> 8;
+
+		return g;
+	}
+
+	public int getB(int x, int y) {
+		int rgb = getPixel(x, y);
+		int b = (rgb & 0xFF);
+
+		return b;
+	}
+
 	public int getPixel(int i) {
 		if (i < 0 || i >= this.pixels.length)
 			return 0;
@@ -85,7 +108,7 @@ public class Bitmap {
 	public void setPixel(int x, int y, int colour) {
 		if (x < 0 || x >= width || y < 0 || y >= height)
 			return;
-		
+
 		this.pixels[x + y * width] = colour;
 	}
 
@@ -173,7 +196,7 @@ public class Bitmap {
 			}
 		}
 	}
-	
+
 	public void drawLineF(float x, float y, float x2, float y2, int colour) {
 		float w = x2 - x;
 		float h = y2 - y;
@@ -291,7 +314,7 @@ public class Bitmap {
 			blit(character, x + (i * sheet.getSpriteWidth()), y);
 		}
 	}
-	
+
 	public void blit(Bitmap bitmap, int xp, int yp) {
 		blit(bitmap, xp, yp, bitmap.getWidth(), bitmap.getHeight());
 	}
@@ -344,28 +367,15 @@ public class Bitmap {
 
 			return (0xFF << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF);
 		} else if (blendMode == BlendMode.MUL) {
-//			float r = (r1 / 255f) * (r2 / 255f);
-//			float g = (g1 / 255f) * (g2 / 255f);
-//			float b = (b1 / 255f) * (b2 / 255f);
-			
-			int r = (r1) * (r2);
-			int g = (g1) * (g2);
-			int b = (b1) * (b2);
-			
-//			if (r != 0f && g != 0f && b != 0f) {
-//				System.out.println("hh");
-//			}
-			
-			return Utils.getHex(r, g, b);
+			 float r = (r1 * r2) / 65025f;
+			 float g = (g1 * g2) / 65025f;
+			 float b = (b1 * b2) / 65025f;
+
+			 int hex = Utils.getHex(r, g, b);
+			 return hex;
 		}
 
 		return (0xFF << 24) | ((r1 & 0xFF) << 16) | ((g1 & 0xFF) << 8) | (b1 & 0xFF);
-	}
-	
-	public void invert() {
-		for (int i = 0; i < this.pixels.length; i++) {
-			this.pixels[i] *= -1;
-		}
 	}
 
 	public void save(String path) {

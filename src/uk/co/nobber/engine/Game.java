@@ -27,7 +27,11 @@ public abstract class Game {
 		this.screen = new Bitmap(width, height);
 	}
 	
-	public void start(int updateRate) {
+	public void start() {
+		start(60, true);
+	}
+	
+	public void start(int updateRate, boolean capFps) {
 		int frames = 0;
 		
 		double unprocessed = 0;
@@ -59,7 +63,11 @@ public abstract class Game {
 				}
 			}
 			
-			if (ticked) {
+			if (capFps && ticked) {
+				render();
+				this.window.update(screen);
+				frames++;
+			} else {
 				render();
 				this.window.update(screen);
 				frames++;

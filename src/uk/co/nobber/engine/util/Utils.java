@@ -1,7 +1,11 @@
 package uk.co.nobber.engine.util;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+
+import uk.co.nobber.engine.level.Light;
+import uk.co.nobber.engine.maths.Vector2f;
 
 public class Utils {
 
@@ -14,17 +18,6 @@ public class Utils {
 		return (rect1.getX() < rect2.getX() + rect2.getWidth()) && (rect1.getX() + rect1.getWidth() > rect2.getX())
 				&& (rect1.getY() < rect2.getY() + rect2.getHeight())
 				&& (rect1.getHeight() + rect1.getY() > rect2.getY());
-	}
-
-	public static void printMap(Map mp) {
-		System.out.println("=======================[START]=======================");
-		Iterator it = mp.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			System.out.println(pair.getKey() + " = " + pair.getValue());
-			it.remove(); // avoids a ConcurrentModificationException
-		}
-		System.out.println("=======================[END]=======================");
 	}
 
 	public static int getHex(int r, int g, int b) {
@@ -42,4 +35,14 @@ public class Utils {
 	public static int getHex(float r, float g, float b) {
 		return Utils.getHex((int) (r * 255), (int) (g * 255), (int) (b * 255));
 	}
+	
+	public static float getAngle(Vector2f origin, Vector2f position) {
+		float a = position.getX() - origin.getX();
+		float o = position.getY() - origin.getY();
+
+		float theta = (float) (Math.atan2(o, a));
+		
+		return theta;
+	}
+
 }
