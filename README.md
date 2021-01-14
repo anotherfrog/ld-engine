@@ -1,5 +1,5 @@
-# LD-Engine
+# (OLD) LD Engine
 
-This engine was created for Ludum Dare.
+A *very* simple Game Engine, created for the Ludum Dare Game Jam. As you can tell this repo has not been updated in a while, but does sometimes come in handy for some quick and dirty graphics.
 
-It is in no ways complete or any good, but I like it soooo...
+The engine is in no way complete, and by all definitions, not an engine!
